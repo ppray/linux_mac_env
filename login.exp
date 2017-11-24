@@ -1,0 +1,22 @@
+#!/usr/bin/expect
+
+set timeout 30
+spawn ssh -o ServerAliveInterval=10 [lindex $argv 0]@[lindex $argv 1].englab.juniper.net
+#spawn ssh -o ServerAliveInterval=10 regress@[lindex $argv 1]
+expect {
+        #"%" {interact;exit}
+        "~" {interact;exit}
+        "\\$" {interact;exit}
+        "(yes/no)?"
+        {send "yes\n";exp_continue}
+        "assword:"
+        #{send "MaRtInI\n"}
+        {send "[lindex $argv 2]\n"}
+}
+#expect {
+#        "%"
+#        {send "su\n";exp_continue}
+#        "assword:"
+#        {send "[lindex $argv 2]\n"}
+#}
+interact
